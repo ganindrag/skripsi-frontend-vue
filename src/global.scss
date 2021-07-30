@@ -1,0 +1,16 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+@import '~vuelayers/lib/style.css';
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
+
+@import 'template/vendors/antd/style';
+@import 'template/vendors/bootstrap/style';
+@import 'template/vendors/nprogress/style';
+@import 'template/vendors/chartist/style';
+@import 'template/vendors/chartist-tooltip-plugin/style';
+@import 'template/vendors/perfect-scrollbar/style';
+@import 'template/vendors/quill/style';
+
+@import 'template/core/style'; // KIT styles
+@import 'template/styles/style'; // AIR UI styles
