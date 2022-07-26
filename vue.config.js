@@ -15,5 +15,5 @@ module.exports = {
       },
     },
   },
-  publicPath: "/skripsi-frontend-vue/",
+  publicPath: "/skripsi-vue/",
 };
