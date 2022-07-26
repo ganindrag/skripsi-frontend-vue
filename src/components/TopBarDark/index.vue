@@ -1,16 +1,19 @@
 <template>
   <div :class="$style.topbarDark">
     <div class="col">
-      <router-link to="/tugas" class="px-3">
+      <router-link to="/tugas" class="px-3 text-white">
         Tugas
       </router-link>
-      <router-link to="/programmer" class="px-3" v-show="user.role === 'ADMIN'">
+      <router-link to="/programmer" class="px-3 text-white" v-show="user.role !== 'USER'">
         Programmer
       </router-link>
-      <router-link to="/laporan" class="px-3" v-show="user.role === 'ADMIN'">
+      <router-link to="/laporan" class="px-3 text-white" v-show="user.role !== 'USER'">
         Laporan
       </router-link>
-      <router-link to="/evaluasi" class="px-3" v-show="user.role === 'ADMIN'">
+      <router-link to="/laporanuser" class="px-3 text-white" v-show="user.role === 'USER'">
+        Laporan
+      </router-link>
+      <router-link to="/evaluasi" class="px-3 text-white" v-show="user.role !== 'USER'">
         Evaluasi
       </router-link>
     </div>

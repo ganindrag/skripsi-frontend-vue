@@ -25,6 +25,16 @@
           </a-form-item>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-4">
+          <a-form-item label="Role Programmer">
+            <a-select v-decorator="['role', { initialValue: 'USER' }]">
+              <a-select-option value="MNGR">Manager</a-select-option>
+              <a-select-option value="USER">User</a-select-option>
+            </a-select>
+          </a-form-item>
+        </div>
+      </div>
       <a-form-item>
         <a-button type="primary" htmlType="submit">Simpan</a-button>
       </a-form-item>

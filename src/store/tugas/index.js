@@ -25,6 +25,7 @@ export default {
       data: [],
     },
     eval: [],
+    dataFeedback: null,
   },
   mutations: {
     SET_STATE(state, payload) {
@@ -52,6 +53,14 @@ export default {
         [payload.status]: result,
       })
     },
+    SET_STATE_DATA_EDIT(state, payload) {
+      Object.assign(state, {
+        dataEdit: {
+          ...state.dataEdit,
+          ...payload,
+        },
+      })
+    },
   },
   actions: {
     CREATE_TUGAS({ commit, dispatch, rootState }, { payload }) {
@@ -61,6 +70,9 @@ export default {
 
       jwt.createTugas(payload.data).then(success => {
         if (success) {
+          if (payload.feedback) {
+            jwt.createFeedback({ feedback: payload.feedback, task_id: success.data.id })
+          }
           commit('SET_STATE', {
             loading: false,
           })
@@ -127,9 +139,22 @@ export default {
         loading: true,
       })
       jwt.dataSingleTugas(payload.id).then((data) => {
+        jwt.dataSingleReport(payload.id).then((dataReport) => {
+          commit('SET_STATE', {
+            loading: false,
+            dataEdit: { ...data, ...dataReport },
+          })
+        })
+      })
+    },
+    LOAD_DATA_FEEDBACK({ commit, dispatch, rootState }, { payload }) {
+      commit('SET_STATE', {
+        loading: true,
+      })
+      jwt.dataFeedback(payload.id).then((data) => {
         commit('SET_STATE', {
-          dataEdit: data,
           loading: false,
+          dataFeedback: data,
         })
       })
     },
@@ -221,6 +246,40 @@ export default {
           Vue.prototype.$notification.success({
             message: 'Sukses!',
             description: 'tugas sudah dinilai.',
+          })
+        }
+        if (!success) {
+          commit('SET_STATE', {
+            loading: false,
+          })
+        }
+      })
+    },
+    CREATE_FEEDBACK({ commit, dispatch, rootState }, { payload }) {
+      commit('SET_STATE', {
+        loading: true,
+      })
+
+      jwt.createFeedback(payload.data).then(success => {
+        if (success) {
+          dispatch('LOAD_DATA_FEEDBACK', { payload: { id: payload.data.task_id } })
+        }
+      })
+    },
+    NILAI_TUGAS({ commit, dispatch, rootState }, { payload }) {
+      commit('SET_STATE', {
+        loading: true,
+      })
+
+      jwt.editTugas(payload.id, { ...payload.data, is_evaluated: true }).then(success => {
+        if (success) {
+          commit('SET_STATE', {
+            loading: false,
+          })
+          dispatch('LOAD_DATA_EDIT_TUGAS', { payload: { id: payload.id } })
+          Vue.prototype.$notification.success({
+            message: 'Sukses!',
+            description: 'Berhasil dinilai',
           })
         }
         if (!success) {

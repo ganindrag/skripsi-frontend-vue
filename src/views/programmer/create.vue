@@ -29,7 +29,7 @@
         <div class="col-md-4">
           <a-form-item label="Role Programmer">
             <a-select v-decorator="['role', { initialValue: 'USER' }]">
-              <a-select-option value="ADMIN">Admin</a-select-option>
+              <a-select-option value="MNGR">Manager</a-select-option>
               <a-select-option value="USER">User</a-select-option>
             </a-select>
           </a-form-item>

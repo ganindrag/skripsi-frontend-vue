@@ -179,3 +179,39 @@ export async function dataReport(params) {
     })
     .catch(err => console.log(err))
 }
+
+export async function dataSingleReport(id) {
+  return api
+    .get('/report/' + id)
+    .then(response => {
+      if (response) {
+        return response.data
+      }
+      return false
+    })
+}
+
+export async function createFeedback(data) {
+  return api
+    .post('/feedback', data)
+    .then(response => {
+      if (response) {
+        return response.data
+      }
+      return false
+    })
+    .catch(err => console.log(err))
+}
+
+export async function dataFeedback(id) {
+  return api
+    .get('/feedback', {
+      params: { task_id: id },
+    })
+    .then(response => {
+      if (response) {
+        return response.data
+      }
+      return []
+    })
+}

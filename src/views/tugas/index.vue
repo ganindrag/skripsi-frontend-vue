@@ -16,7 +16,7 @@
           </div>
           <Container class="card-body p-3" style="min-height: 65vh !important" @drop="(e) => applyDrag('tugas_todo', e)" group-name="tugas" :get-child-payload="getCardPayload('tugas_todo')">
             <Draggable class="border p-3 mb-3 bg-white" v-for="task in tugas.tugas_todo" :key="task.id">
-              <h5 style="cursor: pointer" @click="redirect({ path: '/tugas/ubah', query: { id: task.id } })">{{ task.name }}</h5>
+              <h5 style="cursor: pointer" @click="redirect({ path: user.role === 'USER' ? '/tugas/lihat' : '/tugas/ubah', query: { id: task.id } })">{{ task.name }}</h5>
               {{task.start_at && 'Start: '+formatDate(task.start_at)}}
               <span class="float-right">{{task.programmer_name}}</span>
             </Draggable>
@@ -30,7 +30,7 @@
           </div>
           <Container class="card-body p-3" style="min-height: 65vh !important" @drop="(e) => applyDrag('tugas_doing', e)" group-name="tugas" :get-child-payload="getCardPayload('tugas_doing')">
             <Draggable class="border p-3 mb-3 bg-white" v-for="task in tugas.tugas_doing" :key="task.id">
-              <h5 style="cursor: pointer" @click="redirect({ path: '/tugas/ubah', query: { id: task.id } })">{{ task.name }}</h5>
+              <h5 style="cursor: pointer" @click="redirect({ path: user.role === 'USER' ? '/tugas/lihat' : '/tugas/ubah', query: { id: task.id } })">{{ task.name }}</h5>
               {{task.start_at && 'Start: '+formatDate(task.start_at)}}
               <span class="float-right">{{task.programmer_name}}</span>
             </Draggable>
@@ -44,8 +44,8 @@
           </div>
           <Container class="card-body p-3" style="min-height: 65vh !important" @drop="(e) => applyDrag('tugas_done', e)" group-name="tugas" :get-child-payload="getCardPayload('tugas_done')">
             <Draggable class="border p-3 mb-3 bg-white" v-for="task in tugas.tugas_done" :key="task.id">
-              <h5 style="cursor: pointer" @click="redirect({ path: '/tugas/ubah', query: { id: task.id } })">{{ task.name }}</h5>
-              {{task.start_at && 'Start: '+formatDate(task.start_at)}}
+              <h5 style="cursor: pointer" @click="redirect({ path: user.role === 'USER' ? '/tugas/lihat' : '/tugas/ubah', query: { id: task.id } })">{{ task.name }}</h5>
+              {{task.start_at && 'End: '+formatDate(task.end_at)}} <a-icon type="check-circle" theme="twoTone" two-tone-color="#52c41a" title="sudah dinilai" v-show="task.is_evaluated" />
               <span class="float-right">{{task.programmer_name}}</span>
             </Draggable>
           </Container>
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { Container, Draggable } from 'vue-smooth-dnd'
 import moment from 'moment'
 import router from '@/router'
@@ -66,6 +67,7 @@ export default {
     this.$store.dispatch('tugas/LOAD_DATA_TUGAS', { payload: false })
   },
   computed: {
+    ...mapState(['user']),
     tugas() {
       return this.$store.state.tugas
     },

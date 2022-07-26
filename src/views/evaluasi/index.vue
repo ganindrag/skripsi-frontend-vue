@@ -49,15 +49,12 @@
             :formatter="value => `${value}%`"
             :parser="value => value.replace('%', '')"/>
         </template>
-        <template slot="submit" slot-scope="text, record, index">
-          <a-button type="primary" @click="editTask(index)">
+        <template slot="submit" slot-scope="text, record">
+          <a-button type="primary" @click="goToEdit(record.id)">
             Nilai
           </a-button>
         </template>
       </a-table>
-      <a-button type="primary" @click="editAllTask" class="text-center mt-3">
-        Nilai Semua
-      </a-button>
     </a-form>
     <a-empty v-else />
   </div>
@@ -65,6 +62,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import router from '@/router'
 import { generateArrayDate } from '@/helper/date'
 import { notification } from 'ant-design-vue'
 import moment, { utc } from 'moment-timezone'
@@ -75,6 +73,7 @@ const defaultFilter = {
 
 const columns = [
   {
+    title: 'Programmer',
     dataIndex: 'programmer_name',
     key: 'programmer_name',
   },
@@ -83,42 +82,6 @@ const columns = [
     dataIndex: 'name',
     key: 'name',
     scopedSlots: { customRender: 'name' },
-  },
-  {
-    title: 'Tanggal Mulai',
-    dataIndex: 'start_at',
-    key: 'start_at',
-    scopedSlots: { customRender: 'startdate' },
-  },
-  {
-    title: 'Tanggal Selesai',
-    dataIndex: 'end_at',
-    key: 'end_at',
-    scopedSlots: { customRender: 'enddate' },
-  },
-  {
-    title: 'Target Hari',
-    dataIndex: 'weight',
-    key: 'weight',
-    scopedSlots: { customRender: 'target' },
-  },
-  {
-    title: 'Toleransi Bug',
-    dataIndex: 'bug_tolerance',
-    key: 'bug_tolerance',
-    scopedSlots: { customRender: 'bugTolerance' },
-  },
-  {
-    title: 'Aktual Bug',
-    dataIndex: 'actual_bug',
-    key: 'actual_bug',
-    scopedSlots: { customRender: 'actualBug' },
-  },
-  {
-    title: 'Pemahaman',
-    dataIndex: 'comprehension',
-    key: 'comprehension',
-    scopedSlots: { customRender: 'comprehense' },
   },
   {
     title: 'Aksi',
@@ -202,6 +165,9 @@ export default {
         const { id } = data
         this.$store.dispatch('tugas/SUBMIT_EVAL', { payload: { id, data: { ...data, is_evaluated: true } } })
       })
+    },
+    goToEdit(id) {
+      router.push({ path: '/tugas/ubah', query: { id } })
     },
   },
 }

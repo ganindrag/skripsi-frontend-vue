@@ -7,8 +7,8 @@ import store from '@/store'
 Vue.use(Router)
 
 const router = new Router({
-  base: process.env.BASE_URL,
-  // mode: 'history',
+  base: 'skripsi',
+  mode: 'history',
   scrollBehavior() {
     return { x: 0, y: 0 }
   },
@@ -45,6 +45,13 @@ const router = new Router({
           component: () => import('./views/tugas/edit'),
         },
         {
+          path: '/tugas/lihat',
+          meta: {
+            title: 'Lihat Data Tugas',
+          },
+          component: () => import('./views/tugas/view'),
+        },
+        {
           path: '/programmer',
           meta: {
             title: 'List Tugas',
@@ -71,6 +78,13 @@ const router = new Router({
             title: 'Laporan Programmer',
           },
           component: () => import('./views/laporan'),
+        },
+        {
+          path: '/laporanuser',
+          meta: {
+            title: 'Laporan Programmer',
+          },
+          component: () => import('./views/laporan/user'),
         },
         {
           path: '/evaluasi',

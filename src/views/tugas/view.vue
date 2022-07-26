@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="kit__utils__heading">
-      <h5>Ubah Data Tugas</h5>
+      <h5>Lihat Data Tugas</h5>
     </div>
     <a-tabs type="card">
       <a-tab-pane key="1" tab="Detail">
@@ -11,26 +11,26 @@
               <div class="row">
                 <div class="col-md-6">
                   <a-form-item label="Nama Tugas">
-                    <a-input v-decorator="['name', {initialValue: tugas.dataEdit.name, rules: [{ required: true, message: 'Nama tugas harus diisi'}]}]" />
+                    <a-input v-decorator="['name', {initialValue: tugas.dataEdit.name, rules: [{ required: true, message: 'Nama tugas harus diisi'}]}]" disabled />
                   </a-form-item>
                 </div>
                 <div class="col-md-6">
                   <a-form-item label="Bobot Tugas (dalam hari)">
-                    <a-input-number v-decorator="['weight', {initialValue: tugas.dataEdit.weight}]" class="w-100" />
+                    <a-input-number v-decorator="['weight', {initialValue: tugas.dataEdit.weight}]" class="w-100" disabled />
                   </a-form-item>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <a-form-item label="Keterangan Tugas">
-                    <a-textarea v-decorator="['detail', {initialValue: tugas.dataEdit.detail}]" />
+                    <a-textarea v-decorator="['detail', {initialValue: tugas.dataEdit.detail}]" disabled />
                   </a-form-item>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <a-form-item label="Ditugaskan ke">
-                    <a-select v-decorator="['programmer_id', {initialValue: tugas.dataEdit.programmer_id}]">
+                    <a-select v-decorator="['programmer_id', {initialValue: tugas.dataEdit.programmer_id}]" disabled>
                       <a-select-option v-for="(item) in tugas.dataProgrammer" :key="item.id+item.name" :value="item.id">{{item.name}}</a-select-option>
                     </a-select>
                   </a-form-item>
@@ -39,7 +39,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <a-form-item label="Status Tugas">
-                    <a-select v-decorator="['status', { initialValue: tugas.dataEdit.status }]" @change="handleStatusChange">
+                    <a-select v-decorator="['status', { initialValue: tugas.dataEdit.status }]" @change="handleStatusChange" disabled>
                       <a-select-option value="TODO">ToDo</a-select-option>
                       <a-select-option value="DOING">Doing</a-select-option>
                       <a-select-option value="DONE">Done</a-select-option>
@@ -50,20 +50,17 @@
               <div class="row" v-if="showStartAt">
                 <div class="col-md-6">
                   <a-form-item label="Tanggal Mulai">
-                    <a-date-picker style="width: 100%" v-decorator="['start_at', {initialValue: tugas.dataEdit.start_at, rules: [{ required: showStartAt, message: 'Tanggal harus diisi'}]}]" />
+                    <a-date-picker style="width: 100%" v-decorator="['start_at', {initialValue: tugas.dataEdit.start_at, rules: [{ required: showStartAt, message: 'Tanggal harus diisi'}]}]" disabled />
                   </a-form-item>
                 </div>
               </div>
               <div class="row" v-if="showEndAt">
                 <div class="col-md-6">
                   <a-form-item label="Tanggal Selesai">
-                    <a-date-picker style="width: 100%" v-decorator="['end_at', {initialValue: tugas.dataEdit.end_at, rules: [{ required: showStartAt, message: 'Tanggal harus diisi' }]}]" />
+                    <a-date-picker style="width: 100%" v-decorator="['end_at', {initialValue: tugas.dataEdit.end_at, rules: [{ required: showStartAt, message: 'Tanggal harus diisi' }]}]" disabled />
                   </a-form-item>
                 </div>
               </div>
-              <a-form-item>
-                <a-button type="primary" htmlType="submit">Simpan</a-button>
-              </a-form-item>
             </div>
             <div class="col-md-6">
               <div class="col-md-12 order-md-last pr-0 text-right" v-show="user.role === 'ADMIN'">
@@ -118,7 +115,7 @@
               <h5 slot="title">From: {{item.programmer_name}}</h5>
               <a-avatar slot="avatar">{{item.programmer_name[0]}}</a-avatar>
             </a-list-item-meta>
-            <span slot="actions">{{formatDate(item.created_at)}}</span>
+            <span slot="actions">{{moment(item.created_at)}}</span>
           </a-list-item>
         </a-list>
         <a-divider />
@@ -135,60 +132,19 @@
           </div>
         </a-form>
       </a-tab-pane>
-      <a-tab-pane key="3" tab="Penilaian" :disabled="tugas.dataEdit.is_evaluated || tugas.dataEdit.status !== 'DONE'" v-show="!tugas.dataEdit.is_evaluated">
-        <a-form :form="formEval" layout="vertical" @submit="saveEvalHandler" class="col-md-6 offset-md-6">
-          <a-card size="small" title="Lama Pengerjaan">
-            <a-form-item label="Estimasi / Bobot hari">
-              <a-input-number style="width: 100%" v-decorator="['weight', {initialValue: tugas.dataEdit.weight, rules: [{ required: true, message: 'Estimasi / Bobot hari harus diisi'}]}]" />
-            </a-form-item>
-            <a-form-item label="Tanggal Pengerjaan" style="margin-bottom:0;">
-              <a-form-item :style="{ display: 'inline-block', width: 'calc(50% - 12px)' }">
-                <a-date-picker style="width: 100%" v-decorator="['start_at', {initialValue: utc(tugas.dataEdit.start_at), rules: [{ required: true, message: 'Tanggal awal harus diisi'}]}]" />
-              </a-form-item>
-              <span :style="{ display: 'inline-block', width: '24px', textAlign: 'center' }">
-                -
-              </span>
-              <a-form-item :style="{ display: 'inline-block', width: 'calc(50% - 12px)' }">
-                <a-date-picker style="width: 100%" v-decorator="['end_at', {initialValue: utc(tugas.dataEdit.end_at), rules: [{ required: true, message: 'Tanggal akhir harus diisi'}]}]" />
-              </a-form-item>
-            </a-form-item>
-          </a-card>
-          <br />
-          <a-card size="small" title="Bebas Bug">
-            <a-form-item label="Toleransi Bug">
-              <a-input-number style="width: 100%" v-decorator="['bug_tolerance', {initialValue: tugas.dataEdit.bug_tolerance, rules: [{ required: true, message: 'Toleransi Bug harus diisi'}]}]" />
-            </a-form-item>
-            <a-form-item label="Aktual Bug">
-              <a-input-number style="width: 100%" v-decorator="['actual_bug', {initialValue: tugas.dataEdit.actual_bug, rules: [{ required: true, message: 'Aktual Bug harus diisi'}]}]" />
-            </a-form-item>
-          </a-card>
-          <br />
-          <a-card size="small" title="Pemahaman Tugas">
-            <a-form-item label="Pemahaman Tugas">
-              <a-input-number :min="0" :max="100" :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" style="width: 100%" v-decorator="['comprehension', {initialValue: tugas.dataEdit.comprehension, rules: [{ required: true, message: 'Pemahaman Tugas harus diisi' }]}]" />
-            </a-form-item>
-          </a-card>
-          <br />
-          <a-form-item>
-            <a-button type="primary" htmlType="submit">Simpan</a-button>
-          </a-form-item>
-        </a-form>
-      </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 <script>
-import Vue from 'vue'
 import { mapState } from 'vuex'
 import router from '@/router'
-import moment, { utc } from 'moment'
+import moment from 'moment'
 
 export default {
   data: function () {
     return {
       form: this.$form.createForm(this),
       formFeedback: this.$form.createForm(this),
-      formEval: this.$form.createForm(this),
     }
   },
   computed: {
@@ -230,23 +186,6 @@ export default {
         }
       })
     },
-    saveEvalHandler(e) {
-      e.preventDefault()
-      this.formEval.validateFields((err, values) => {
-        console.log(values.start_at)
-        if (!values.start_at.isSameOrBefore(values.end_at)) {
-          Vue.prototype.$notification.error({
-            message: 'Gagal!',
-            description: 'Format tanggal salah',
-          })
-        } else {
-          const id = this.$route.query.id
-          if (!err) {
-            this.$store.dispatch('tugas/NILAI_TUGAS', { payload: { id, data: values } })
-          }
-        }
-      })
-    },
     handleStatusChange(v) {
       this.showStartAt = v !== 'TODO'
       this.showEndAt = v === 'DONE'
@@ -255,10 +194,9 @@ export default {
       const id = this.$route.query.id
       this.$store.dispatch('tugas/DELETE_TUGAS', { payload: { id } })
     },
-    formatDate(props) {
+    moment(props) {
       return moment(props).format('DD MMM YYYY')
     },
-    utc,
   },
 }
 </script>

@@ -11,14 +11,15 @@
     <a-table :columns="columns" :dataSource="programmer" :rowKey="record => record.id">
       <span slot="action" slot-scope="text, record">
         <a @click="redirect({ path: '/programmer/ubah', query: { id: record.id } })">Ubah</a>
-        <a-divider type="vertical" />
-        <a @click="confirm(record.id, 'Yakin mau hapus data ini?')">Hapus</a>
+        <a-divider type="vertical" v-show="user.role === 'ADMIN'" />
+        <a @click="confirm(record.id, 'Yakin mau hapus data ini?')" v-show="user.role === 'ADMIN'">Hapus</a>
       </span>
     </a-table>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import router from '@/router'
 
 const columns = [{
@@ -45,6 +46,7 @@ export default {
     this.$store.dispatch('programmer/LOAD_DATA_PROGRAMMER', { payload: false })
   },
   computed: {
+    ...mapState(['user']),
     programmer() {
       return this.$store.state.programmer.list
     },

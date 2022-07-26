@@ -54,10 +54,6 @@ export default {
             list: success,
             loading: false,
           })
-          Vue.prototype.$notification.success({
-            message: 'Sukses!',
-            description: 'Berhasil simpan',
-          })
         }
         if (!success) {
           commit('SET_STATE', {
@@ -89,7 +85,7 @@ export default {
           })
           Vue.prototype.$notification.success({
             message: 'BERASIL',
-            description: 'uhuy',
+            description: 'Berhasil simpan',
           })
           router.push('/programmer')
         }
