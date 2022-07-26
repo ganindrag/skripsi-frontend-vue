@@ -7,7 +7,7 @@ import store from "@/store";
 Vue.use(Router);
 
 const router = new Router({
-  base: "skripsi-vue",
+  base: "skripsi",
   mode: "history",
   scrollBehavior() {
     return { x: 0, y: 0 };
@@ -78,6 +78,13 @@ const router = new Router({
             title: "Laporan Programmer",
           },
           component: () => import("./views/laporan"),
+        },
+        {
+          path: "/laporanuser",
+          meta: {
+            title: "Laporan Programmer",
+          },
+          component: () => import("./views/laporan/user"),
         },
         {
           path: "/evaluasi",
