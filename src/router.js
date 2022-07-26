@@ -1,21 +1,21 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import AuthLayout from '@/layouts/Auth'
-import MainLayout from '@/layouts/Main'
-import store from '@/store'
+import Vue from "vue";
+import Router from "vue-router";
+import AuthLayout from "@/layouts/Auth";
+import MainLayout from "@/layouts/Main";
+import store from "@/store";
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
-  base: 'skripsi',
-  mode: 'history',
+  base: "skripsi-vue",
+  mode: "history",
   scrollBehavior() {
-    return { x: 0, y: 0 }
+    return { x: 0, y: 0 };
   },
   routes: [
     {
-      path: '/',
-      redirect: 'tugas',
+      path: "/",
+      redirect: "tugas",
       component: MainLayout,
       meta: {
         authRequired: true,
@@ -24,128 +24,123 @@ const router = new Router({
       children: [
         // Dashboards
         {
-          path: '/tugas',
+          path: "/tugas",
           meta: {
-            title: 'List Tugas',
+            title: "List Tugas",
           },
-          component: () => import('./views/tugas'),
+          component: () => import("./views/tugas"),
         },
         {
-          path: '/tugas/buat',
+          path: "/tugas/buat",
           meta: {
-            title: 'Buat Data Tugas',
+            title: "Buat Data Tugas",
           },
-          component: () => import('./views/tugas/create'),
+          component: () => import("./views/tugas/create"),
         },
         {
-          path: '/tugas/ubah',
+          path: "/tugas/ubah",
           meta: {
-            title: 'Ubah Data Tugas',
+            title: "Ubah Data Tugas",
           },
-          component: () => import('./views/tugas/edit'),
+          component: () => import("./views/tugas/edit"),
         },
         {
-          path: '/tugas/lihat',
+          path: "/tugas/lihat",
           meta: {
-            title: 'Lihat Data Tugas',
+            title: "Lihat Data Tugas",
           },
-          component: () => import('./views/tugas/view'),
+          component: () => import("./views/tugas/view"),
         },
         {
-          path: '/programmer',
+          path: "/programmer",
           meta: {
-            title: 'List Tugas',
+            title: "List Tugas",
           },
-          component: () => import('./views/programmer'),
+          component: () => import("./views/programmer"),
         },
         {
-          path: '/programmer/buat',
+          path: "/programmer/buat",
           meta: {
-            title: 'Buat Data Programmer',
+            title: "Buat Data Programmer",
           },
-          component: () => import('./views/programmer/create'),
+          component: () => import("./views/programmer/create"),
         },
         {
-          path: '/programmer/ubah',
+          path: "/programmer/ubah",
           meta: {
-            title: 'Ubah Data Programmer',
+            title: "Ubah Data Programmer",
           },
-          component: () => import('./views/programmer/edit'),
+          component: () => import("./views/programmer/edit"),
         },
         {
-          path: '/laporan',
+          path: "/laporan",
           meta: {
-            title: 'Laporan Programmer',
+            title: "Laporan Programmer",
           },
-          component: () => import('./views/laporan'),
+          component: () => import("./views/laporan"),
         },
         {
-          path: '/laporanuser',
+          path: "/evaluasi",
           meta: {
-            title: 'Laporan Programmer',
+            title: "Evaluasi Tugas",
           },
-          component: () => import('./views/laporan/user'),
-        },
-        {
-          path: '/evaluasi',
-          meta: {
-            title: 'Evaluasi Tugas',
-          },
-          component: () => import('./views/evaluasi'),
+          component: () => import("./views/evaluasi"),
         },
       ],
     },
 
     // System Pages
     {
-      path: '/auth',
+      path: "/auth",
       component: AuthLayout,
-      redirect: 'auth/login',
+      redirect: "auth/login",
       children: [
         {
-          path: '/auth/404',
+          path: "/auth/404",
           meta: {
-            title: 'Error 404',
+            title: "Error 404",
           },
-          component: () => import('./views/auth/404'),
+          component: () => import("./views/auth/404"),
         },
         {
-          path: '/auth/500',
+          path: "/auth/500",
           meta: {
-            title: 'Error 500',
+            title: "Error 500",
           },
-          component: () => import('./views/auth/500'),
+          component: () => import("./views/auth/500"),
         },
         {
-          path: '/auth/login',
+          path: "/auth/login",
           meta: {
-            title: 'Sign In',
+            title: "Sign In",
           },
-          component: () => import('./views/auth/login'),
+          component: () => import("./views/auth/login"),
         },
       ],
     },
 
     // Redirect to 404
     {
-      path: '*', redirect: 'auth/404', hidden: true,
+      path: "*",
+      redirect: "auth/404",
+      hidden: true,
     },
   ],
-})
+});
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.authRequired)) {
+  if (to.matched.some((record) => record.meta.authRequired)) {
     if (!store.state.user.authorized) {
       next({
-        path: '/auth/login',
+        path: "/auth/login",
         query: { redirect: to.fullPath },
-      })
+      });
     } else {
-      next()
+      next();
     }
   } else {
-    next()
+    next();
   }
-})
+});
 
-export default router
+export default router;
