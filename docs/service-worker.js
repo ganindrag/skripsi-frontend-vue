@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/skripsi-vue/precache-manifest.c3ddb2baf72426f899657055af4ef40a.js"
+  "/skripsi-frontend-vue/precache-manifest.89035cf11bf2b09d062732ab796845b2.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "air-ui-admin-template-vue"});

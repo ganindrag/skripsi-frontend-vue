@@ -3,7 +3,7 @@ import store from 'store'
 import { notification } from 'ant-design-vue'
 
 const apiClient = axios.create({
-  baseURL: 'https://grandian.site/apiskripsigo',
+  baseURL: 'https://skripsi-backend-go.herokuapp.com/',
   // baseURL: 'http://localhost:3000',
   // timeout: 1000,
   // headers: { 'X-Custom-Header': 'foobar' }
